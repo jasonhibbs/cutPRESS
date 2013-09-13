@@ -1,0 +1,88 @@
+// Tables  /////////////////////////////////////////////////////////
+
+
+table {
+  width: 100%;
+  white-space: nowrap;
+  margin-bottom : @baselineheight;
+  border-collapse : collapse;
+  border-spacing : 0;
+  background-color : @tablebackground;
+  .box-sizing(border-box);
+
+  th,
+  td {
+    vertical-align : top;
+    border-top : @tableborderwidth @tableborderstyle @tableborder;
+    padding: 0 (@baselineheight / 2);
+    .font-size(14);
+    line-height: ((@baselineheight * 1.5) - 2px);
+    text-align: left;
+    
+    height: (@baselineheight * 1.5);
+    .box-sizing(border-box);
+  }
+
+  th {
+    font-weight : bold;
+  }
+
+  thead th {
+    vertical-align : bottom;
+    border-top: none;
+  }
+
+  colgroup + thead tr:first-child th,
+  colgroup + thead tr:first-child td,
+  thead:first-child tr:first-child th,
+  thead:first-child tr:first-child td {
+    border-top : 0;
+  }
+
+  tbody + tbody {
+    border-top : (@tableborderwidth * 2) @tableborderstyle @tableborder;
+  }
+
+  tbody tr td,
+  tbody tr th {
+    .transition(background-color 0.1s);
+  }
+
+  tbody tr:hover td,
+  tbody tr:hover th {
+    background-color : @tablehover;
+  }
+  
+  tbody tr:first-child td,
+  tfoot tr:first-child th {
+    border-top-width: (@tableborderwidth * 2);
+  }
+  
+  // I was really proud of this, until Wikipedia did it too…
+  @media only screen and (max-width: 599px) {
+    overflow: auto;
+    overflow-y: hidden;
+    overflow-x: auto;
+    display: block;
+  }
+}
+
+
+
+// Table Mixins ----------------------------------------------------
+
+
+// Apply to table element
+
+.striped-table(@color: @tablestripe) {
+  
+  tbody tr:nth-child(odd) {
+    background-color: @color;
+  }
+  
+  tbody tr:hover td,
+  tbody tr:hover th {
+    background-color: transparent;
+  }
+  
+}

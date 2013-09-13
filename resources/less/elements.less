@@ -1,0 +1,78 @@
+// Elements  ///////////////////////////////////////////////////////
+
+
+//  Horizontal Rule ------------------------------------------------
+
+hr { 
+  display: block; 
+  border: 0; 
+  border-top: 1px solid @bordercolor;
+  margin: (@baselineheight) 0 (@baselineheight - 1px); 
+  padding: 0;
+}
+
+
+
+// Images ----------------------------------------------------------
+
+img {
+  height: auto; 
+  vertical-align: middle; 
+  -ms-interpolation-mode: bicubic;
+}
+
+
+
+// Figures ---------------------------------------------------------
+
+figure {
+  margin-bottom: (@baselineheight);
+  
+  img {
+    width: 100%;
+  }
+  
+  figcaption {
+    display: block;
+    font-weight: normal;
+    .font-size(14); 
+    color: @grey;
+  }
+  
+  a {
+    cursor: pointer;
+  }
+}
+
+
+// Details and Summary ---------------------------------------------
+
+summary {
+  cursor: pointer;
+  
+  &:focus {
+    outline: 1px dotted @inputfocus;
+  }
+}
+
+details {
+  
+}
+
+
+// Media -----------------------------------------------------------
+
+// Remove the gap between images, videos, audio and canvas and the bottom of
+// their containers: h5bp.com/i/440
+
+audio,
+canvas,
+video {
+  vertical-align: middle;
+  max-width: 100%;
+}
+
+// Why not, eh?
+video {
+  background-color: fadeout(@black, 10%);
+}
