@@ -1,10 +1,17 @@
-// Menu Bar ////////////////////////////////////////////////////////
+//@codekit-prepend "plugins.js"
 
+// Helpers /////////////////////////////////////////////////////////
+var $window = $(window);
+var window_width = $window.width();
+var breakpoint = 0;
+
+
+// Functions /////////////////////////////////////////////////////////
+
+// Menu Bar --------------------------------------------------------
 // If we’re loading a narrow page, close the nav
-
 $(function(){
-  var w = $(window).width();
-  if(w <= 600) {
+  if(window_width <= 600) {
     $('.head nav ul').addClass('closed');
   }
 });
@@ -14,13 +21,26 @@ $('.menu_bar').click(function() {
   $('.head nav ul').toggleClass('closed');
 });
 
-// In case people are just testing our responsive skills, make sure the menu opens again…
-$(window).resize(function(){
-  var w = $(window).width();
-  if(w > 600 && $('.head nav ul')) {
+
+// Resize //////////////////////////////////////////////////////////
+$window.resize(function(){
+
+  // Update window width
+  window_width = $window.width();
+
+  function breakpoint() {
+    // Still thinking about it.
+  }
+
+  // In case people are just testing our responsive skills, make sure the menu opens again…
+  if(window_width > 600 && $('.head nav ul')) {
     $('.head nav ul').removeClass('closed');
   }
+
 });
 
 
-// Scripts /////////////////////////////////////////////////////////
+// Loaded //////////////////////////////////////////////////////////
+$window.load(function () {
+  
+});

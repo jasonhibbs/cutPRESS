@@ -1,29 +1,22 @@
 <?php
 
-// Nav Menus ///////////////////////////////////////////////////////
-
-register_nav_menus( 
-  array(
-    'nav'       => __('Primary Nav')
-  )
-);
-
-
-
-
 // Typical Helpers /////////////////////////////////////////////////
 
-// Add Thumbnails
-add_theme_support( 'post-thumbnails' );
+// Site Title
+define('SITE_TITLE', get_bloginfo('name'));
 
-// Saving a path
-define('TEMPPATH', get_bloginfo('template_directory').'/resources');
+// Site Title
+define('SITE_DESC', get_bloginfo('description'));
 
-// Brand Name
-define('SITE_TITLE', 'cutPRESS');
+// Site URL
+define('SITE_URL', get_bloginfo('url'));
 
+// Template Path
+define('TEMP_PATH', get_bloginfo('template_directory').'/resources');
 
+// Add Classes -----------------------------------------------------
 // Body Classes
+add_filter('body_class', 'my_plugin_body_class');
 function my_plugin_body_class($classes) {
   
   global $post;
@@ -40,74 +33,71 @@ function my_plugin_body_class($classes) {
   return $classes;
 }
 
-add_filter('body_class', 'my_plugin_body_class');
+// Menu Classes
+add_filter('page_css_class', 'add_menu_class', 10, 2);
+function add_menu_class($classes, $page){
+  
+  $pagelower = strtolower($page->post_name);
+  $pageclass = str_replace(' ', '_', $pagelower);
+
+  $classes[] = 'menu_' . $pageclass;
+  return $classes;
+}
 
 
-// Adjust Menus ////////////////////////////////////////////////////
+// Nav Classes
+add_filter('nav_menu_css_class', 'add_nav_class', 10, 2);
+function add_nav_class($classes, $item){
 
+  $itemlower = strtolower($item->title);
+  $itemclass = str_replace(' ', '_', $itemlower);
+
+  $classes[] = 'nav_' . $itemclass;  
+  return $classes;
+}
+
+// Functions -------------------------------------------------------
+// Get ID by Slug
+function get_ID_by_slug($page_slug) {
+  $page = get_page_by_path($page_slug);
+  if ($page) {
+      return $page->ID;
+  } else {
+      return null;
+  }
+}
+
+// Turn words into class names
+function classify($string) {
+  $string = strtolower(str_replace(' ', '_', $string));
+  $string = strtolower(str_replace('.', '', $string));
+  return $string;
+}
+
+
+// Register WP Features ////////////////////////////////////////////
+
+// Add Thumbnails
+add_theme_support( 'post-thumbnails' );
+
+// Register Nav
+register_nav_menus( 
+  array(
+    'nav'       => __('Primary Nav')
+  )
+);
+
+
+
+// Dashboard Features //////////////////////////////////////////////
+
+// Adjust Menus 
+/*
 add_action( 'admin_menu', 'adjust_the_wp_menu', 999 );
 function adjust_the_wp_menu() {
   //remove_menu_page('edit-comments.php');
-  //remove_submenu_page( 'edit.php', 'edit-tags.php?taxonomy=category' );
-  //remove_submenu_page( 'edit.php', 'edit-tags.php?taxonomy=post_tag' );
-  
-  // This file doesn’t exist, it serves only as a hook to put custom posts in
-  add_menu_page( 'More Posts', 'More Posts', 'manage_options', 'custom-posts.php', '', '', 6 );
+  //add_menu_page( 'Lead', 'Lead', 'manage_options', 'post.php?post='.get_ID_by_slug('lead').'&action=edit', '', 'dashicons-star-filled', 5 );
 }
+*/
 
 
-// Custom Post Types ///////////////////////////////////////////////
-
-add_action('init', 'create_post_type');
-function create_post_type() {
-  register_post_type('custom-post', array( 
-      'label' => __('Custom Posts'),
-      'description' => '',
-      'public' => true,
-      'show_ui' => true,
-      'show_in_menu' => 'custom-posts.php',
-      'capability_type' => 'post',
-      'hierarchical' => false,
-      'rewrite' => array('slug' => 'custom-post', 'with_front' => '1'),
-      'query_var' => true,
-      'exclude_from_search' => false,
-      'menu_position' => 15,
-      'supports' => array('title','editor','excerpt','custom-fields','revisions','thumbnail','page-attributes'),
-      'labels' => array (
-        'name' => 'Custom Posts',
-        'singular_name' => 'Custom Post',
-        'menu_name' => 'Custom Posts',
-        'add_new' => 'Add Custom Post',
-        'add_new_item' => 'Add New Custom Post',
-        'edit' => 'Edit',
-        'edit_item' => 'Edit Custom Post',
-        'new_item' => 'New Custom Post',
-        'view' => 'View Custom Post',
-        'view_item' => 'View Custom Post',
-        'search_items' => 'Search Custom Posts',
-        'not_found' => 'No Custom Posts Found',
-        'not_found_in_trash' => 'No Custom Posts Found in Trash',
-        'parent' => 'Parent Custom Post',
-      )
-    )
-  );
-}
-
-
-
-// Custom Taxonomies ///////////////////////////////////////////////
-
-
-register_taxonomy('custom-category',
-  array(  
-    0 => 'custom-post'
-  ),
-  array(
-    'label' => __('Custom Categories'),
-    'singular_label' => 'Custom Category',
-    'hierarchical' => true,
-    'show_ui' => true,
-    'query_var' => true,
-    'rewrite' => array( 'slug' => 'custom-category')
-  )
-);

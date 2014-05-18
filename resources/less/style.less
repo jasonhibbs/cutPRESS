@@ -1,38 +1,27 @@
 // cutLESS
-// Version 0.0.2
-
-// Core ////////////////////////////////////////////////////////////
+// Version 2.0.2
 
 // Normalise -----------------------------------
-@import "normalize.less";
+@import (less) "normalize.css";
 
 // Variables & Mixins --------------------------
+@import "settings.less";
 @import "variables.less";
 @import "mixins.less";
 
-// The Grid ------------------------------------
-@import "grid.less";
-
-// Site-wide Styles
-@import "base.less";
-
-// FontAwesome ---------------------------------
-@import "../fontawesome/less/font-awesome.less";
-
-
-// Project /////////////////////////////////////////////////////////
-
 // Typography ----------------------------------
+@import "../fontawesome/less/font-awesome.less";
 @import "typography.less";
-
-// Colour --------------------------------------
-@import "colour.less";
 
 // Elements ------------------------------------
 @import "elements.less";
 @import "forms.less";
 @import "tables.less";
 @import "buttons.less";
+
+// Layout ------------------------------------
+@import "layout.less";
+@import "base.less";
 
 
 // Layout //////////////////////////////////////////////////////////
@@ -43,20 +32,25 @@
 // Print Styles
 @media print { @import "print.less"; }
 
-// 480px
-@media only screen and (min-width: 480px)  { @import "480.less";  }
-
-// 600px
-@media only screen and (min-width: 600px)  { @import "600.less";  }
-
-// 768px
-@media only screen and (min-width: 768px)  { @import "768.less";  }
-
-// 992px
-@media only screen and (min-width: 992px)  { @import "992.less";  }
-
-// 1382px
-@media only screen and (min-width: 1382px) { @import "1382.less"; }
+& when (@responsive) {
+  // 480px
+  @media @phone-landscape { @import "480.less"; }
+  
+  // 600px
+  @media @small-tablet    { @import "600.less"; }
+  
+  // 768px
+  @media @tablet          { @import "768.less"; }
+  
+  // 992px
+  @media @desktop         { @import "992.less"; }
+  
+  // 1382px
+  @media @large-desktop   { @import "1382.less"; }
+  
+  // 1872px
+  @media @huge-desktop    { @import "1872.less"; }
+}
 
 // 2x
 @media

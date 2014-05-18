@@ -5,72 +5,186 @@ input[type="reset"],
 input[type="button"],
 input[type="submit"],
 input[type="image"],
-.button {
+.btn {
   display: inline-block;
-  margin-bottom: 0; // For input.button
   
-  .font-size(14);
-  height: (@baselineheight * 1.25);
-
+  .font-size(12);
+ 
+  max-width: 100%;
+  height: @blh;
+  line-height: (@blh - (@buttonborderwidth * 2));
+  
+  padding: 0 8px;
+  border: @buttonborderwidth solid @buttonbordercolor;
+  border-radius: @buttonroundness;
+  margin: 0;
+  
+  background: @buttonbackground;
+  .transition(~'border-color 0.2s, background-color 0.2s');
+  
   text-align: center;
   white-space: nowrap;
   vertical-align: top;
+  
   cursor: pointer;
-  outline: none;
-  
-  color: @buttoncolor;
-  background: @buttonbackground;
-  background-image: none; // Reset unusual Firefox-on-Android default style; see https://github.com/necolas/normalize.css/issues/214
-  border: 1px solid transparent;
-  
-  .box-sizing(border-box);
-  
-  .border-radius(3px);
-  .user-select(none);
-  .appearance(none);
-  .transition(~"background 0.2s, border 0.1s, box-shadow 0.2s");
 
+  &,
+  &:visited,
+  &:hover {
+    color: @textcolor;
+    
+    & when (luma(@buttonbackground) < 64%) {
+      color: @white;
+    }
+  }
+  
   &:focus,
   &:hover {
-    background: @buttonhover;
+    outline: none;
     text-decoration: none;
+    background: darken(@buttonbackground, 5%);
+    border-color: darken(@buttonbackground, 5%);
   }
-
-  &:active,
-  &.active {
-    outline: 0;
-    background-image: none;
+  
+  & when (@buttondepth) {
+    border-bottom-color: darken(@buttonbordercolor, 10%);
     
+    &:focus,
+    &:hover {
+      border-color: darken(@buttonbackground, 5%);
+      border-bottom-color: darken(@buttonbordercolor, 15%);
+    }
+    
+    &:active {
+      border-color: darken(@buttonbackground, 5%);
+      border-top-color: darken(@buttonbordercolor, 15%);
+      line-height: (@blh);
+    }
   }
-
+  
   &.disabled,
   &[disabled],
   fieldset[disabled] & {
     cursor: not-allowed;
-    pointer-events: none; // Future-proof disabling of clicks
-    .opacity(0.6);
-    .box-shadow(none);
+    pointer-events: none;
+    opacity: 0.6;
   }
-
 }
 
-button,
-input[type="reset"],
-input[type="button"],
-input[type="submit"],
-.button {
-  padding: 0 (@gutterwidth / 2);
-  border: 1px solid @buttonborder;
-  //.box-shadow(0 1px 2px rgba(0,0,0,0.2));
+// Sizing ----------------------------------------------------------
+
+.btn-small() {
+  .font-size(11);
+  height: @smallsize;
+  line-height: (@smallsize - (@buttonborderwidth * 2));
+  padding: 0 6px;
+  
+  &:active {
+    line-height: @smallsize;  
+  }
+}
+
+.btn-base() {
+  .font-size(12);
+  height: @blh;
+  line-height: (@blh - (@buttonborderwidth * 2));
+  padding: 0 8px;
+  
+  &:active {
+    line-height: @blh;  
+  }
+}
+
+.btn-large() {
+  .font-size(14);
+  height: @largesize;
+  line-height: (@largesize - (@buttonborderwidth * 2));
+  padding: 0 10px;
+  
+  &:active {
+    line-height: @largesize;  
+  }
+}
+
+.btn-xlarge() {
+  .font-size(16);
+  height: @xlargesize;
+  line-height: (@xlargesize - (@buttonborderwidth * 2));
+  padding: 0 14px;
+  
+  &:active {
+    line-height: @xlargesize;  
+  }
+}
+
+.btn-size(@size) {
+  .font-size(@size);
+  height: 2em;
+  line-height: 1.85em;
+  padding: 0 1em 0.15em;
+  
+  &:active {
+    border-top-width: (@buttonborderwidth * 2);
+  }
+}
+
+// Colours ---------------------------------------------------------
+
+// Typical Colours
+.btn-primary { .btn-color(@basecolor);    }
+.btn-alert   { .btn-color(@alertcolor);   }
+.btn-error   { .btn-color(@errorcolor);   }
+.btn-info    { .btn-color(@infocolor);    }
+.btn-success { .btn-color(@successcolor); }
+.btn-warning { .btn-color(@warningcolor); }
+.btn-inverse { .btn-color(@inversecolor); }
+
+// Colour Builder
+.btn-color(@thiscolor) {
+  background-color: @thiscolor;
+  border-color: @thiscolor;
+  & when (@buttondepth) {
+    border-bottom-color: darken(@thiscolor, 15%);
+  }
+  
+  &,
+  &:visited,
+  &:hover {
+    color: contrast(@thiscolor, darken(@thiscolor, 40%), @white, 60%);
+  }
   
   &:focus,
   &:hover {
-    border-color: @buttonhover;
+    & when (luma(@thiscolor) < 60%) {
+      background-color: desaturate(darken(@thiscolor, 5%), 8%);
+      border-color:     desaturate(darken(@thiscolor, 5%), 8%);      
+      & when (@buttondepth) {
+        border-bottom-color: darken(@thiscolor, 20%);
+      }
+    }
+    & when (luma(@thiscolor) > 60%) {
+      background-color: desaturate(darken(@thiscolor, 5%), 5%);
+      border-color:     desaturate(darken(@thiscolor, 5%), 5%);
+      & when (@buttondepth) {
+        border-bottom-color: darken(@thiscolor, 20%);
+      }
+    }
   }
   
-  &:active,
-  &.active {
-    border-top: 2px solid darken(@buttonhover, 10%);
-    //.box-shadow(0 1px 1px rgba(0,0,0,0.2));
+  &:active {
+    & when (luma(@thiscolor) < 64%) {
+      background-color: desaturate(darken(@thiscolor, 5%), 8%);
+      border-color:     desaturate(darken(@thiscolor, 5%), 8%);      
+      & when (@buttondepth) {
+        border-top-color: darken(@thiscolor, 20%);
+      }
+    }
+    & when (luma(@thiscolor) > 64%) {
+      background-color: desaturate(darken(@thiscolor, 5%), 5%);
+      border-color:     desaturate(darken(@thiscolor, 5%), 5%);
+      & when (@buttondepth) {
+        border-top-color: darken(@thiscolor, 20%);
+      }
+    }
   }
 }
