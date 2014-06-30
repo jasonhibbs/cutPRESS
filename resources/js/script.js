@@ -9,16 +9,28 @@ var breakpoint = 0;
 // Functions /////////////////////////////////////////////////////////
 
 // Menu Bar --------------------------------------------------------
-// If we’re loading a narrow page, close the nav
-$(function(){
-  if(window_width <= 600) {
-    $('.head nav ul').addClass('closed');
+// Close the nav
+$('.head nav')
+  .attr('aria-expanded', 'false')
+  .removeClass('closed');
+
+
+// Toggle the nav
+$('.menu_bar').click(function() {
+  if ( $('.head nav').attr('aria-expanded') === 'true' ) {
+    $('.head nav').attr('aria-expanded', 'false');
+  } else {
+    $('.head nav').attr('aria-expanded', 'true');
   }
 });
 
-// Toggle the menu
-$('.menu_bar').click(function() {
-  $('.head nav ul').toggleClass('closed');
+// Naughty ---------------------------------------------------------
+// Remove empty paragraphs
+$('p').each(function() {
+ var $this = $(this);
+ if($this.html().replace(/\s|&nbsp;/g, '').length == 0) {
+   $this.remove();
+  }
 });
 
 
@@ -27,15 +39,6 @@ $window.resize(function(){
 
   // Update window width
   window_width = $window.width();
-
-  function breakpoint() {
-    // Still thinking about it.
-  }
-
-  // In case people are just testing our responsive skills, make sure the menu opens again…
-  if(window_width > 600 && $('.head nav ul')) {
-    $('.head nav ul').removeClass('closed');
-  }
 
 });
 

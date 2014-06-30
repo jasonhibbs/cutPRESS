@@ -6,7 +6,7 @@
 
 <title><?php print SITE_TITLE; ?><?php wp_title('–',true,'left');?></title>
 
-<meta name="description" content=" ">
+<meta name="description" content="<?php print SITE_DESC; ?>">
 <meta name="designer" content="Jason Hibbs">
 
 <meta name="HandheldFriendly" content="True">
@@ -31,9 +31,6 @@
 <header role="banner" class="head">
   <div class="layout">
     <h1 class="site_title"><a href="<?php print SITE_URL; ?>" title="The Homepage of <?php print SITE_TITLE; ?>"><?php print SITE_TITLE; ?></a></h1>
-    <nav role="navigation">
-      <?php wp_nav_menu(array('theme_location' => 'nav')); ?>
-      <h1 class="menu_bar"><i class="icon-reorder"></i> Menu</h1>
-    </nav>
+    <?php get_template_part('nav', 'primary'); ?>
   </div>
 </header>

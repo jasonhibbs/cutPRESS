@@ -74,6 +74,35 @@ function classify($string) {
   return $string;
 }
 
+// Add Page Excerpts
+add_action( 'init', 'add_excerpts_to_pages' );
+function add_excerpts_to_pages() {
+  add_post_type_support( 'page', 'excerpt' );
+}
+
+// Excerpt Ellipsis
+add_filter('excerpt_more', 'excerpt_ellipsis');
+function excerpt_ellipsis( $more ) {
+  return '…';
+}
+
+/*
+// Edit Excerpts
+add_filter( 'excerpt_length', 'limit_excerpt');
+function limit_excerpt( $length ) {
+  return 40;
+}
+
+// First Paragraph Excerpt
+add_filter( 'wp_trim_excerpt', 'excerpt_first_p', 10, 2 );
+function excerpt_first_p($text, $raw_excerpt) {
+  if( ! $raw_excerpt ) {
+      $content = apply_filters( 'the_content', get_the_content() );
+      $text = substr( $content, 0, strpos( $content, '</p>' ) + 4 );
+  }
+  return $text;
+}
+*/
 
 // Register WP Features ////////////////////////////////////////////
 
@@ -88,16 +117,53 @@ register_nav_menus(
 );
 
 
+// Custom Post Types ///////////////////////////////////////////////
+add_action('init', 'create_post_type');
+function create_post_type() {
+
+  // Custom Posts --------------------------------------------------------
+  /*
+  register_post_type('custom_post', array( 
+      'label' => __('Custom Posts'),
+      'description' => '',
+      'public' => true,
+      'menu_icon'=> 'dashicons-star',
+      'capability_type' => 'post',
+      'hierarchical' => false,
+      'rewrite' => array('slug' => 'custom_post', 'with_front' => '1'),
+      'query_var' => true,
+      'menu_position' => 5,
+      'supports' => array('title','editor','excerpt','custom-fields','revisions','thumbnail','page-attributes'),
+      'labels' => array (
+        'name' => 'Custom Posts',
+        'singular_name' => 'Custom Post',
+        'menu_name' => 'Custom Posts',
+        'add_new' => 'Add Custom Post',
+        'add_new_item' => 'Add New Custom Post',
+        'edit' => 'Edit',
+        'edit_item' => 'Edit Custom Post',
+        'new_item' => 'New Custom Post',
+        'view' => 'View Custom Post',
+        'view_item' => 'View Custom Post',
+        'search_items' => 'Search Custom Posts',
+        'not_found' => 'No Custom Posts Found',
+        'not_found_in_trash' => 'No Custom Posts Found in Trash',
+        'parent' => 'Parent Custom Post',
+      )
+    )
+  );
+  */
+}
+
 
 // Dashboard Features //////////////////////////////////////////////
 
-// Adjust Menus 
-/*
-add_action( 'admin_menu', 'adjust_the_wp_menu', 999 );
-function adjust_the_wp_menu() {
-  //remove_menu_page('edit-comments.php');
-  //add_menu_page( 'Lead', 'Lead', 'manage_options', 'post.php?post='.get_ID_by_slug('lead').'&action=edit', '', 'dashicons-star-filled', 5 );
+if( function_exists('acf_add_options_sub_page') ) {
+  /*
+  acf_add_options_sub_page(array(
+    'title' => 'Custom Settings',
+    'parent' => 'options-general.php',
+    'capability' => 'manage_options'
+  ));
+  */
 }
-*/
-
-

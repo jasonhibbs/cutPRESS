@@ -1,11 +1,11 @@
-<?php // Template Name: Page
+<?php // Template Name: Home
 get_header(); ?>
 
 <div role="main" class="content">
   <div class="layout">
   
-    <div class="the_content">
-      <?php get_template_part('loop', 'simple'); ?>
+    <div class="the_posts">
+      <?php get_template_part('loop', 'article'); ?>
     </div>
   
   </div>

@@ -1,7 +1,7 @@
 <footer class="foot" role="contentinfo">
   <div class="layout"> 
     <div class="bottom_line">
-      <small><a class="copyright" href="<?php print SITE_URL; ?>" title="<?php print SITE_TITLE; ?>">©<?php echo date('Y');?> <?php print SITE_TITLE; ?></a></small>
+      <small><a class="copyright" href="<?php print SITE_URL; ?>" title="<?php print SITE_TITLE; ?>">©<?php if (date('Y') === '2014') { echo '2014'; } else { echo '2014&ndash;' . date('y'); };?> <?php print SITE_TITLE; ?></a></small>
     </div>
   </div>  
 </footer>

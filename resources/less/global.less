@@ -10,21 +10,28 @@
   &:extend(.clearfix all);
 }
 
-[role="navigation"] {
-  @navitems: 2; // Change this to the number of items in your <nav>
+nav[role="navigation"] {
+  @navitems: 4; // Change this to the number of items in your <nav>
 
   ul {
     .delist();
     max-height: (@blh * @navitems); // Or change this to the height of your open nav
     overflow: hidden;
     .transition(max-height 0.4s); // Or just remove this and max-height
+  }
+  
+  li {
+    color: @textcolor;
     
-    li a {
-      display: block;
+    &:hover,
+    &.current_page_item,
+    &.current_page_parent {
+      color: @basecolor;
     }
     
-    &.closed {
-      max-height: 0;
+    a {
+      display: block;
+      color: inherit;
     }
   }
   
@@ -33,6 +40,17 @@
     line-height: @blh;
     margin: 0 0 @blh;
     cursor: pointer;
+  }
+  
+  .js &.closed,
+  &[aria-expanded="false"] {
+    ul {
+      max-height: 0;
+
+      @media (min-width: @tablet-width) {
+        max-height: none;
+      }
+    }
   }
 }
 
