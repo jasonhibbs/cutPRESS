@@ -1,6 +1,6 @@
 <!doctype html>
-<!--[if lt IE 9]>     <html class="no-js lt-ie9" prefix="og: http://ogp.me/ns#"><![endif]-->
-<!--[if gt IE 8]><!--><html class="no-js gt-ie8" lang="en" prefix="og: http://ogp.me/ns#"><!--<![endif]-->
+<!--[if lt IE 9]>     <html class="no-js lt-ie9" <?php language_attributes(); ?> prefix="og: http://ogp.me/ns#"><![endif]-->
+<!--[if gt IE 8]><!--><html class="no-js gt-ie8" <?php language_attributes(); ?> prefix="og: http://ogp.me/ns#"><!--<![endif]-->
 <head>
 <meta charset="utf-8">
 

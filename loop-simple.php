@@ -1,10 +1,21 @@
-<?php // Starting the loop
-  if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
+<?php if ( have_posts() ) : ?>
+    
+  <div class="have_posts">
+    
+    <?php while ( have_posts() ) : the_post(); ?>
+  
+      <?php get_template_part('content', 'simple'); ?>
+  
+    <?php endwhile; ?>
+  
+  </div>
+  
+  <?php else: ?>
+  
+  <div class="no_posts">
 
-  <h1><?php the_title(); ?></h1>
-  <div class="the_content"><?php the_content(); ?></div>
-
-<?php // We’ve finished with the loop
-  endwhile;
-  endif;
-  wp_reset_postdata(); ?>
+    <p><?php _ex('We couldn’t find what you were looking for!', 'Page not found copy', 'Theme'); ?></p>
+    
+  </div>
+  
+<?php endif; wp_reset_postdata(); ?>

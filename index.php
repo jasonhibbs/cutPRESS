@@ -1,13 +1,11 @@
 <?php // Template Name: Index
 get_header(); ?>
 
-<div role="main" class="content">
+<div role="main" class="content index">
   <div class="layout">
-  
-    <div class="the_posts">
-      <?php get_template_part('loop', 'article'); ?>
-    </div>
-  
+    
+    <?php get_template_part('loop', 'article'); ?>
+     
   </div>
 </div>
 

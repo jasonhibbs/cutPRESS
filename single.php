@@ -4,9 +4,7 @@ get_header(); ?>
 <div role="main" class="content">
   <div class="layout">
   
-    <div class="the_post">
-      <?php get_template_part('loop', 'article'); ?>
-    </div>
+    <?php get_template_part('loop', 'article'); ?>
   
   </div>
 </div>

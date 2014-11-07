@@ -22,12 +22,14 @@ function my_plugin_body_class($classes) {
   global $post;
   global $pagename;
   
-  if ( is_single() ) {
-      $classes[] = $post->post_name;
+  // If possible, get the Post Name
+  if ( isset( $post ) ) {
+    $classes[] = $post->post_name;
   }
   
+  // If possible, get the Page Name, this may be the same
   if ( isset( $pagename ) ) {
-      $classes[] = $pagename;
+    $classes[] = $pagename;
   }
   
   return $classes;
@@ -112,52 +114,107 @@ add_theme_support( 'post-thumbnails' );
 // Register Nav
 register_nav_menus( 
   array(
-    'nav'       => __('Primary Nav')
+    'nav' => __('Primary Nav')
   )
 );
+
+
+// Custom Taxonomies ///////////////////////////////////////////////
+add_action('init', 'create_taxonomy');
+function create_taxonomy() {
+  
+  $custom_taxonomies = array(
+    /*
+    "my_courses" => array(
+      "for"    => "my_notes", // Required
+      "single" => "Course",   // Required
+      "plural" => "Courses",  // Required
+      "slug"   => "notes/courses"    // Recommended
+    ),
+    */
+  );
+  
+  foreach ($custom_taxonomies as $tax => $val) {  
+  	register_taxonomy($tax, array( $val['for'] ), array(
+  	  'hierarchical'      => (array_key_exists('hierarchical', $val)) ? $val['hierarchical'] : true,
+  		'show_ui'           => true,
+  		'show_admin_column' => true,
+  		'query_var'         => true,
+  		'rewrite'           => array(
+  	    'slug' => (array_key_exists('slug', $val)) ? $val['slug'] : $tax,
+  	  ),
+  		'labels'            => array(
+    		'name'              => _x($val['plural'],  $val['single'] . ' Plural Label', 'Functions'),
+    		'singular_name'     => _x($val['single'],  $val['single'] . ' Singular Label', 'Functions'),
+    		'menu_name'         => _x($val['plural'],  $val['single'] . ' Plural Label', 'Functions'),
+    		'search_items'      => __( 'Search ' . $val['plural']),
+    		'all_items'         => __( 'All ' . $val['plural']),
+    		'parent_item'       => __( 'Parent ' . $val['single']),
+    		'parent_item_colon' => __( 'Parent ' . $val['single'] . ':' ),
+    		'edit_item'         => __( 'Edit ' . $val['single']),
+    		'update_item'       => __( 'Update ' . $val['single']),
+    		'add_new_item'      => __( 'Add New ' . $val['single']),
+    		'new_item_name'     => __( 'New ' . $val['single'] . ' Name' ),
+    	),
+    ));
+  }
+}
 
 
 // Custom Post Types ///////////////////////////////////////////////
 add_action('init', 'create_post_type');
 function create_post_type() {
 
-  // Custom Posts --------------------------------------------------------
-  /*
-  register_post_type('custom_post', array( 
-      'label' => __('Custom Posts'),
-      'description' => '',
-      'public' => true,
-      'menu_icon'=> 'dashicons-star',
-      'capability_type' => 'post',
-      'hierarchical' => false,
-      'rewrite' => array('slug' => 'custom_post', 'with_front' => '1'),
-      'query_var' => true,
-      'menu_position' => 5,
-      'supports' => array('title','editor','excerpt','custom-fields','revisions','thumbnail','page-attributes'),
-      'labels' => array (
-        'name' => 'Custom Posts',
-        'singular_name' => 'Custom Post',
-        'menu_name' => 'Custom Posts',
-        'add_new' => 'Add Custom Post',
-        'add_new_item' => 'Add New Custom Post',
-        'edit' => 'Edit',
-        'edit_item' => 'Edit Custom Post',
-        'new_item' => 'New Custom Post',
-        'view' => 'View Custom Post',
-        'view_item' => 'View Custom Post',
-        'search_items' => 'Search Custom Posts',
-        'not_found' => 'No Custom Posts Found',
-        'not_found_in_trash' => 'No Custom Posts Found in Trash',
-        'parent' => 'Parent Custom Post',
-      )
-    )
+  $custom_post_types = array(
+    /*
+    "my_notes" => array(
+      "single"    => "Note",  // Required
+      "plural"    => "Notes", // Required
+      "menu_icon" => "dashicons-pressthis", // http://melchoyce.github.io/dashicons/
+      "slug"      => "notes"  // Recommended
+    ),
+    */
   );
-  */
+  
+  foreach ($custom_post_types as $type => $val) {
+    register_post_type($type, array(
+        'label'                 => $val["plural"],
+        'description'           => '',
+        'public'                => true,
+        'menu_icon'             => (array_key_exists('menu_icon', $val)) ? $val['menu_icon'] : 'dashicons-star-filled',
+        'capability_type'       => 'post',
+        'hierarchical'          => false,
+        'has_archive'           => true,
+        'rewrite'               => array(
+          'slug'                => (array_key_exists('slug', $val)) ? $val['slug'] : $type,
+          'with_front'          => '0'
+        ),
+        'query_var'             => true,
+        'menu_position'         => (array_key_exists('menu_position', $val)) ? $val['menu_position'] : 5,
+        'supports'              => array('title','editor','excerpt','custom-fields','revisions','thumbnail','page-attributes'),
+        'labels'                => array (
+          'name'                => _x($val["plural"],  $val["single"] . " Singular Label", "Functions"),
+          'singular_name'       => _x($val["single"],  $val["single"] . " Singular Label", "Functions"),
+          'menu_name'           => _x($val["plural"],  $val["single"] . " Singular Label", "Functions"),
+          'add_new'             => __('Add ' . $val["single"]),
+          'add_new_item'        => __('Add New ' . $val["single"]),
+          'edit'                => __('Edit'),
+          'edit_item'           => __('Edit ' . $val["single"]),
+          'new_item'            => __('New ' . $val["single"]),
+          'view'                => __('View ' . $val["single"]),
+          'view_item'           => __('View ' . $val["single"]),
+          'search_items'        => __('Search ' . $val["plural"]),
+          'not_found'           => __('No ' . $val["plural"] . ' Found'),
+          'not_found_in_trash'  => __('No ' . $val["plural"] . ' Found in Trash'),
+          'parent'              => __('Parent ' . $val["single"]),
+        )
+      )
+    );
+  }
 }
 
 
 // Dashboard Features //////////////////////////////////////////////
-
 if( function_exists('acf_add_options_sub_page') ) {
   /*
   acf_add_options_sub_page(array(
