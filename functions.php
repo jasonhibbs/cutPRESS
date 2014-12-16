@@ -14,6 +14,9 @@ define('SITE_URL', get_bloginfo('url'));
 // Template Path
 define('TEMP_PATH', get_bloginfo('template_directory').'/resources');
 
+// Template Version
+define('TEMP_VER', '0');
+
 // Add Classes -----------------------------------------------------
 // Body Classes
 add_filter('body_class', 'my_plugin_body_class');
