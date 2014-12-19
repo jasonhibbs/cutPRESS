@@ -138,7 +138,7 @@ function create_taxonomy() {
   );
   
   foreach ($custom_taxonomies as $tax => $val) {  
-  	register_taxonomy($tax, array( $val['for'] ), array(
+  	register_taxonomy($tax, $val['for'], array(
   	  'hierarchical'      => (array_key_exists('hierarchical', $val)) ? $val['hierarchical'] : true,
   		'show_ui'           => true,
   		'show_admin_column' => true,
