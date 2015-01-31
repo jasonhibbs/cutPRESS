@@ -11,10 +11,10 @@
 }
 
 // Primary Navigation Menu
-#nav_primary {
+[role="navigation"] {
   @expands: @tablet-width; // Width at which nav doesn’t need to collapse
   @nlh: (@blh * 1.25); // Nav line-height, how tall the links should be
-  @navitems: 3; // Change this to the number of items in your <nav>
+  @navitems: 2; // Change this to the number of items in your <nav>
 
   ul {
     .delist();
@@ -39,13 +39,11 @@
     }
   }
   
-  &[aria-expanded="false"] {
-    ul {
-      max-height: 0;
+  ul[aria-expanded="false"] {
+    max-height: 0 !important;
 
-      @media (min-width: @expands) {
-        max-height: none;
-      }
+    @media (min-width: @expands) {
+      max-height: none !important;
     }
   }
 }
